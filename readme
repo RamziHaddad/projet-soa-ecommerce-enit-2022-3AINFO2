@@ -38,6 +38,7 @@
 - payment: responsable de l'exécution du processus de paiement d'une commande par un utilisateur auprès de la banque.
 - mailing : envoie d'emails (voir [le service mailtrap](https://mailtrap.io/) et [l'exemple](https://quarkus.io/guides/mailer))
 
+-bank : service externe fourni tel quel (non fiable) 
 # ports
 vérifier les ports de chaque microservice
 
