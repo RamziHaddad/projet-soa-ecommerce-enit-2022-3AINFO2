@@ -140,6 +140,30 @@ public class ProductService {
         return results;
     }
 
+    public List<Product> filterByPrice(Integer min, Integer max) throws IOException {
+        SearchRequest searchRequest = new SearchRequest(PRODUCT_INDEX_NAME);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(QueryBuilders.rangeQuery("price")
+                                                .from(min)
+                                                .to(max).
+                                                includeLower(true)
+                                                .includeUpper(false));
+        searchRequest.source(searchSourceBuilder);
+
+        log.debug("ES query = {}", Json.encode(searchRequest));
+        SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        log.debug("ES response = {}", Json.encode(searchResponse));
+        SearchHits hits = searchResponse.getHits();
+        List<Product> results = new ArrayList<>(hits.getHits().length);
+        log.debug("  {} hit found !", hits.getHits().length);
+
+        for (SearchHit hit : hits.getHits()) {
+            String sourceAsString = hit.getSourceAsString();
+            JsonObject json = new JsonObject(sourceAsString);
+            results.add(json.mapTo(Product.class));
+        }
+        return results;
+    }
    
 
 }

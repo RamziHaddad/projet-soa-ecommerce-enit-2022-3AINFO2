@@ -21,7 +21,9 @@
                 brand: "",
                 price: "",
                 description: "",
-                termSearch:""
+                termSearch:"",
+                minPriceSearch: "",
+                maxPriceSearch: ""
             };
 
             //HTTP POST methods for add products
@@ -75,6 +77,23 @@
                     });
             }
 
+            $scope.filterByPrice = function () {
+                $http({
+                    method: 'GET',
+                    url: '/products/search/filterByPrice',
+                    params: {"gte": $scope.form.minPriceSearch, "lte": $scope.form.maxPriceSearch},
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(function successCallback(response) {
+                        console.log(response)
+                        $scope.products = response.data;
+                    }, function errorCallback(response) {
+                        console.log(response.statusText);
+                        _error(response)
+                    });
+            }
+
 
 
             function _success(response) {
@@ -93,6 +112,8 @@
                 $scope.form.price = "";
                 $scope.form.description="";
                 $scope.form.termSearch="";
+                $scope.form.minPriceSearch="";
+                $scope.form.maxPriceSearch="";
             }
         });
     </script>
@@ -127,8 +148,17 @@
         <div class="row">
             <div class="col-6"><input type="text" placeholder="search for a product, category or brand" ng-model="form.termSearch" size="60"/></div>
         </div>
-        
         <input type="submit" value="Search"/>
+    </form>
+    <h3>Filter products by price</h3>
+    <form ng-submit="filterByPrice()">
+       
+            <input class="col-6" type="number" placeholder="0" ng-model="form.minPriceSearch" size="60"/>
+        
+        
+            <input class="col-6" type="number" placeholder="0" ng-model="form.maxPriceSearch" size="60"/>
+        
+        <input type="submit" value="OK"/>
     </form>
 
     <h3>Product List</h3>
