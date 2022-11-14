@@ -10,5 +10,6 @@ public class Product {
     private String category;
     private String description;
     private Double price;
+    private String brand;
     
 }

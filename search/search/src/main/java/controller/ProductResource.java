@@ -40,19 +40,29 @@ public class ProductResource {
 
     @GET
     @Path("/search")
-    public List<Product> search(@QueryParam("name") String name, @QueryParam("category") String category,
-     @QueryParam("description") String desc, @QueryParam("price") Double price) throws IOException {
+    public List<Product> search(@QueryParam("term") String term) throws IOException{
+        if (term != null){
+            return productService.searchItem(term);
+        } else {
+            throw new BadRequestException("Should provide the name or category or brand of the product as a query parameter");
+        }
+
+    }
+    /*public List<Product> search(@QueryParam("name") String name, @QueryParam("category") String category,
+     @QueryParam("brand") String brand) throws IOException {
         if (name != null) {
             return productService.searchByName(name);
-        } else if (category != null) {
+        } 
+        if (category != null) {
             return productService.searchByCategory(category);
-        } else if ( desc != null){
-            return productService.searchByDesc(desc);
-        } else if (price != null){
-            return productService.searchByPrice(price);   
-        } else {
-            throw new BadRequestException("Should provide name or category or description or price query parameter");
+        } 
+        if ( brand != null){
+            return productService.searchByBrand(brand);
+        } 
+        if (brand == null && name == null && category == null){
+            throw new BadRequestException("Should provide the name or category or brand of the product as a query parameter");
         }
-    }
+        return null;
+    }*/
     
 }

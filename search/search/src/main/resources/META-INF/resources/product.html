@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Product REST service</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/wingcss/0.1.8/wing.min.css"/>
+    <!-- Load AngularJS -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script type="text/javascript">
+        var app = angular.module("ProductManagement", []);
+
+        //Controller Part
+        app.controller("ProductManagementController", function ($scope, $http) {
+
+            //Initialize page with default data which is blank in this example
+            $scope.products = [];
+
+            $scope.form = {
+                name: "",
+                category: "",
+                brand: "",
+                price: "",
+                description: "",
+                termSearch:""
+            };
+
+            //HTTP POST methods for add products
+            $scope.add = function () {
+                console.log("start POST for name: " + $scope.form.name)
+                var data = { "name": $scope.form.name, "category": $scope.form.category, "brand": $scope.form.brand, "price": $scope.form.price, "description": $scope.form.description };
+
+                $http({
+                    method: "POST",
+                    url: '/products',
+                    data: angular.toJson(data),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(_success, _error);
+            };
+
+            //HTTP GET methods for fruits search
+           /* $scope.search = function () {
+                console.log("start GET for name: " + $scope.form.nameSearch)
+                $http({
+                    method: "GET",
+                    url: '/products/search',
+                    params: { "name": $scope.form.nameSearch, "category": $scope.form.descriptionSearch, "brand": $scope.form.brandSearch },
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(function successCallback(response) {
+                        console.log(response)
+                        $scope.products = response.data;
+                    }, function errorCallback(response) {
+                        console.log(response.statusText);
+                        _error(response)
+                    });
+            };*/
+            $scope.search = function () {
+                console.log("start GET for a term: " + $scope.form.termSearch)
+                $http({
+                    method: "GET",
+                    url: '/products/search',
+                    params: {"term": $scope.form.termSearch},
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(function successCallback(response) {
+                        console.log(response)
+                        $scope.products = response.data;
+                    }, function errorCallback(response) {
+                        console.log(response.statusText);
+                        _error(response)
+                    });
+            }
+
+
+
+            function _success(response) {
+                _clearForm();
+            }
+
+            function _error(response) {
+                alert(response.data.message || response.statusText);
+            }
+
+            //Clear the form
+            function _clearForm() {
+                $scope.form.name = "";
+                $scope.form.category = "";
+                $scope.form.brand = "";
+                $scope.form.price = "";
+                $scope.form.description="";
+                $scope.form.termSearch="";
+            }
+        });
+    </script>
+</head>
+<body ng-app="ProductManagement" ng-controller="ProductManagementController">
+
+<div class="container">
+    <h1>REST Service - Product</h1>
+
+    <h3>Add a product</h3>
+    <form ng-submit="add()">
+        <div class="row">
+            <div class="col-6"><input type="text" placeholder="Name" ng-model="form.name" size="60"/></div>
+        </div>
+        <div class="row">
+            <div class="col-6"><input type="text" placeholder="Category" ng-model="form.category" size="60"/></div>
+        </div>
+        <div class="row">
+            <div class="col-6"><input type="text" placeholder="Brand" ng-model="form.brand" size="60"/></div>
+        </div>
+        <div class="row">
+            <div class="col-6"><input type="text" placeholder="Price" ng-model="form.price" size="60"/></div>
+        </div>
+        <div class="row">
+            <div class="col-6"><input type="text" placeholder="Description" ng-model="form.description" size="60"/></div>
+        </div>
+        <input type="submit" value="Save"/>
+    </form>
+
+    <h3>Search a product</h3>
+    <form ng-submit="search()">
+        <div class="row">
+            <div class="col-6"><input type="text" placeholder="search for a product, category or brand" ng-model="form.termSearch" size="60"/></div>
+        </div>
+        
+        <input type="submit" value="Search"/>
+    </form>
+
+    <h3>Product List</h3>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Brand</th>
+            <th>Price</th>
+            <th>Description</th>
+        </tr>
+        <tr ng-repeat="product in products">
+            <td>{{ product.name }}</td>
+            <td>{{ product.category }}</td>
+            <td>{{ product.brand }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.description }}</td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
