@@ -6,7 +6,7 @@ docker-compose up
 You can run your application in dev mode that enables live coding using:
 
 ./mvnw compile quarkus:dev
-Fruit demo
+Product demo
 Single page app to create and search for fruit
 
 http://localhost:8080/product.html
