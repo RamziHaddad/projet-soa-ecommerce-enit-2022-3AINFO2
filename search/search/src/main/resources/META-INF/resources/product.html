@@ -121,9 +121,11 @@
 <body ng-app="ProductManagement" ng-controller="ProductManagementController">
 
 <div class="container">
-    <h1>REST Service - Product</h1>
-
-    <h3>Add a product</h3>
+    <h2>REST Service - Product</h2>
+<table>
+    <tr>
+        <td>
+            <h4>Add a product</h4>
     <form ng-submit="add()">
         <div class="row">
             <div class="col-6"><input type="text" placeholder="Name" ng-model="form.name" size="60"/></div>
@@ -142,42 +144,49 @@
         </div>
         <input type="submit" value="Save"/>
     </form>
-
-    <h3>Search a product</h3>
-    <form ng-submit="search()">
-        <div class="row">
-            <div class="col-6"><input type="text" placeholder="search for a product, category or brand" ng-model="form.termSearch" size="60"/></div>
-        </div>
-        <input type="submit" value="Search"/>
+        </td>
+        <td>
+            <h4>Search a product</h4>
+            <form ng-submit="search()">
+                <div class="row">
+                    <div class="col-6"><input type="text" placeholder="search for a product, category or brand" ng-model="form.termSearch" size="60"/></div>
+                </div>
+                <input type="submit" value="Search"/>
+            
+            <h6>Filter products by price</h6>
+            
+               
+                    <input class="col-6" type="number" placeholder="0" ng-model="form.minPriceSearch" size="60"/>
+                
+                
+                    <input class="col-6" type="number" placeholder="0" ng-model="form.maxPriceSearch" size="60"/>
+                
+                <input type="submit" value="OK"/>
+            </form>
+        
+            <h3>Product List</h3>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Brand</th>
+                    <th>Price</th>
+                    <th>Description</th>
+                </tr>
+                <tr ng-repeat="product in products">
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.category }}</td>
+                    <td>{{ product.brand }}</td>
+                    <td>{{ product.price }}</td>
+                    <td>{{ product.description }}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
     
-    <h5>Filter products by price</h5>
-    
-       
-            <input class="col-6" type="number" placeholder="0" ng-model="form.minPriceSearch" size="60"/>
-        
-        
-            <input class="col-6" type="number" placeholder="0" ng-model="form.maxPriceSearch" size="60"/>
-        
-        <input type="submit" value="OK"/>
-    </form>
 
-    <h3>Product List</h3>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Brand</th>
-            <th>Price</th>
-            <th>Description</th>
-        </tr>
-        <tr ng-repeat="product in products">
-            <td>{{ product.name }}</td>
-            <td>{{ product.category }}</td>
-            <td>{{ product.brand }}</td>
-            <td>{{ product.price }}</td>
-            <td>{{ product.description }}</td>
-        </tr>
-    </table>
+
 </div>
 
 </body>
