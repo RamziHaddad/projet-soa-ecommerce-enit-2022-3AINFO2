@@ -40,25 +40,18 @@ public class ProductResource {
 
     @GET
     @Path("/search")
-    public List<Product> search(@QueryParam("term") String term) throws IOException{
-        if (term != null){
+    public List<Product> search(@QueryParam("term") String term, @QueryParam("gte") Integer gte, @QueryParam("lte") Integer lte) throws IOException{
+        if (term != null && (gte == null || lte == null)){
             return productService.searchItem(term);
+        }else if (term != null || gte != null || lte != null){
+            return productService.filterByPrice(term, gte, lte);
         } else {
             throw new BadRequestException("Should provide the name or category or brand of the product as a query parameter");
         }
 
     }
 
-    @GET
-    @Path("/search/filterByPrice")
-    public List<Product> filterByPrice(@QueryParam("gte") Integer gte, @QueryParam("lte") Integer lte) throws IOException{
-        if (gte != null || lte != null ){
-            return productService.filterByPrice(gte, lte);
-        } else {
-            throw new BadRequestException("Should provide the name or category or brand of the product as a query parameter");
-        }
-
-    }
+   
     /*public List<Product> search(@QueryParam("name") String name, @QueryParam("category") String category,
      @QueryParam("brand") String brand) throws IOException {
         if (name != null) {

@@ -12,7 +12,9 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
+
 import org.elasticsearch.index.query.QueryBuilders;
+
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -140,14 +142,16 @@ public class ProductService {
         return results;
     }
 
-    public List<Product> filterByPrice(Integer min, Integer max) throws IOException {
+    public List<Product> filterByPrice(String term, Integer min, Integer max) throws IOException {
         SearchRequest searchRequest = new SearchRequest(PRODUCT_INDEX_NAME);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.rangeQuery("price")
+        searchSourceBuilder.query(QueryBuilders.boolQuery().filter(QueryBuilders.rangeQuery("price")
                                                 .from(min)
                                                 .to(max).
                                                 includeLower(true)
-                                                .includeUpper(false));
+                                                .includeUpper(false))
+                                                .must(QueryBuilders.multiMatchQuery(term,"name","brand","category")) 
+                                                );
         searchRequest.source(searchSourceBuilder);
 
         log.debug("ES query = {}", Json.encode(searchRequest));

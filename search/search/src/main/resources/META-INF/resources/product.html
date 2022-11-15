@@ -64,7 +64,7 @@
                 $http({
                     method: "GET",
                     url: '/products/search',
-                    params: {"term": $scope.form.termSearch},
+                    params: {"term": $scope.form.termSearch, "gte": $scope.form.minPriceSearch, "lte": $scope.form.maxPriceSearch},
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -77,11 +77,11 @@
                     });
             }
 
-            $scope.filterByPrice = function () {
+           /* $scope.filterByPrice = function () {
                 $http({
                     method: 'GET',
-                    url: '/products/search/filterByPrice',
-                    params: {"gte": $scope.form.minPriceSearch, "lte": $scope.form.maxPriceSearch},
+                    url: '/products/search/filteredByPrice',
+                    params: {"term": $scope.form.termSearch,"gte": $scope.form.minPriceSearch, "lte": $scope.form.maxPriceSearch},
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -92,7 +92,7 @@
                         console.log(response.statusText);
                         _error(response)
                     });
-            }
+            }*/
 
 
 
@@ -149,9 +149,9 @@
             <div class="col-6"><input type="text" placeholder="search for a product, category or brand" ng-model="form.termSearch" size="60"/></div>
         </div>
         <input type="submit" value="Search"/>
-    </form>
-    <h3>Filter products by price</h3>
-    <form ng-submit="filterByPrice()">
+    
+    <h5>Filter products by price</h5>
+    
        
             <input class="col-6" type="number" placeholder="0" ng-model="form.minPriceSearch" size="60"/>
         
