@@ -10,3 +10,4 @@ You can run the application in dev mode that enables live coding using:
 Product demo
 Single page app to create and search for product
 http://localhost:8080/product.html
+

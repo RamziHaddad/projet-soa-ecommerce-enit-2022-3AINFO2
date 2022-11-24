@@ -4,6 +4,8 @@ import domain.Product;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import lombok.extern.slf4j.Slf4j;
+
+import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -21,6 +23,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +43,9 @@ public class ProductService {
     @Inject
     RestHighLevelClient restHighLevelClient;
 
-    public void create(Product product) throws IOException {
+
+
+    public void index(Product product) throws IOException {
         log.debug("Indexing PRODUCT [{}] in ES", product.getName());
         IndexRequest request = new IndexRequest(PRODUCT_INDEX_NAME);
         request.id(product.getId());
@@ -48,6 +53,17 @@ public class ProductService {
         restHighLevelClient.index(request, RequestOptions.DEFAULT);
         log.debug("PRODUCT [{}] indexed ", product.getName());
     }
+
+    public void deleteIndex(Product product) throws IOException {
+        
+        DeleteRequest request = new DeleteRequest(PRODUCT_INDEX_NAME, product.getId());  
+        request.id(product.getId());
+        restHighLevelClient.delete(request, RequestOptions.DEFAULT);
+        log.debug("PRODUCT [{}] deleted ", product.getName());
+
+    }
+
+
 
     public Product findById(String id) throws IOException {
         log.debug("Find PRODUCT by ID : [{}]", id);
@@ -168,6 +184,8 @@ public class ProductService {
         }
         return results;
     }
+
+   
    
 
 }

@@ -23,7 +23,7 @@ public class ProductResource {
         if (product.getId() == null) {
             product.setId(UUID.randomUUID().toString());
         }
-        productService.create(product);
+        productService.index(product);
         return Response.created(URI.create("/products/" + product.getId())).build();
     }
 
