@@ -1,0 +1,23 @@
+version: '3'
+services: 
+    postgres:
+        container_name: catalog-db
+        image: postgres:latest
+        environment:
+            POSTGRES_USER: azerty
+            POSTGRES_PASSWORD: azerty
+            POSTGRES_DB: catalog
+        restart: always
+        ports:
+            - 5432:5432
+
+    pgadminn:
+        container_name: catalog-pgadmin
+        image: dpage/pgadmin4
+        environment:
+            PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+            PGADMIN_DEFAULT_PASSWORD: azerty
+            PGADMIN_LISTEN_PORT: 5050
+            PGADMIN_CONFIG_SERVER_MODE: 'False'
+        ports:
+            - 5050:5050
