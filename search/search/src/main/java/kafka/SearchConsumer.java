@@ -23,7 +23,7 @@ public class SearchConsumer {
 
         Gson gson = new Gson();    
         Product product = gson.fromJson(productJson, Product.class);
-
+        System.out.println(product.getId());
         Product productDB = productService.findById(product.getId());
 
         if (productDB == null){
@@ -37,7 +37,7 @@ public class SearchConsumer {
 
     }
 
-    @Incoming("catalog-delete")
+    /*@Incoming("catalog-delete")
     public void delete(String productJson) throws IOException {
 
         Gson gson = new Gson();    
@@ -49,6 +49,6 @@ public class SearchConsumer {
             productService.deleteIndex(productDB);
         } 
 
-    }
+    }*/
     
 }
